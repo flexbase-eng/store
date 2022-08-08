@@ -1,7 +1,7 @@
 {
-  "name": "@flexbase/template-typescript-package",
+  "name": "@flexbase/store",
   "version": "0.0.1",
-  "description": "template repo for npmjs packages utilizing typescript",
+  "description": "State management framework for typescript",
   "author": {
     "name": "Flexbase Technologies",
     "email": "hello@flexbase.app",
@@ -9,18 +9,16 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/flexbase-eng/template-typescript-package/issues"
+    "url": "https://github.com/flexbase-eng/store/issues"
   },
-  "homepage": "https://github.com/flexbase-eng/template-typescript-package#readme",
+  "homepage": "https://github.com/flexbase-eng/store#readme",
   "keywords": [
-    "flexbase"
-  ],
-  "contributors": [
-    "Chris Fowlkes <chris.fowlkes@flexbase.app>"
+    "flexbase",
+    "state management"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/flexbase-eng/template-typescript-package.git"
+    "url": "git+https://github.com/flexbase-eng/store.git"
   },
   "main": "dist/index.js",
   "module": "dist/index.es.js",

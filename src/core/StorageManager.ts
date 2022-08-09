@@ -161,7 +161,7 @@ export class StorageManager {
     const storeWrapper = this._stores.get(store.key);
 
     if (!storeWrapper) {
-      return (setter: SetterCallback<T>) => {
+      return (_: SetterCallback<T>) => {
         this._logger?.warn(`Trying to set value with key '${store.key.toString()}' which has not been registered with this storage manager`);
         return Promise.resolve();
       };

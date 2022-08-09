@@ -12,11 +12,6 @@ export class PersistanceStorageProvider<T> implements PersistanceProvider<T> {
         return this.onRead(context.setter);
 
       case 'write':
-        if (context.value === undefined) {
-          return this.onClear();
-        }
-        return this.onWrite(context.value);
-
       case 'reset':
         if (context.value === undefined) {
           return this.onClear();

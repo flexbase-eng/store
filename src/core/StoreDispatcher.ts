@@ -15,12 +15,12 @@ class DefaultStoreDispatcher implements StoreDispatcher {
     return this.invokeMiddleware(context, middleware);
   }
 
-  private async invokeMiddleware<T>(context: StoreMiddlewareContext<T>, middleware: StoreMiddleware<T>[]): Promise<void> {
-    if (!middleware.length) return;
+  private invokeMiddleware<T>(context: StoreMiddlewareContext<T>, middleware: StoreMiddleware<T>[]): Promise<void> {
+    if (!middleware.length) return Promise.resolve();
 
     const mw = middleware[0];
 
-    return mw(context, async () => await this.invokeMiddleware(context, middleware.slice(1)));
+    return mw(context, () => this.invokeMiddleware(context, middleware.slice(1)));
   }
 }
 

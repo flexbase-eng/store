@@ -182,6 +182,10 @@ export class StorageManager {
 
     return subjectManager.subscribe(storeWrapper.subject, callback);
   }
+
+  static lookupManager(store: Store<unknown>): StorageManager | undefined {
+    return _storageReverseLookup.get(store.key);
+  }
 }
 
 /** Represents a global storage manager instance */

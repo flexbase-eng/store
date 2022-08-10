@@ -1,5 +1,12 @@
-const world = 'world';
-
-export function hello(who: string = world): string {
-  return `Hello ${who}!`;
-}
+export { StorageManager, storageManager } from './core/StorageManager';
+export { Store } from './core/Store';
+export { StoreComparer, defaultStoreComparer } from './core/StoreComparer';
+export { StoreDispatcher, defaultStoreDispatcher } from './core/StoreDispatcher';
+export { StoreMiddlewareContext, StoreMiddlewareNext, StoreMiddleware } from './core/StoreMiddleware';
+export { SetterCallback, Setter } from './core/StoreSetter';
+export { PersistanceContext, PersistanceEvent } from './persistance/PersistanceContext';
+export { PersistanceStorage } from './persistance/PersistanceStorage';
+export { PersistanceProvider } from './persistance/PersistanceProvider';
+export { PersistanceStorageProvider } from './persistance/PersistanceStorageProvider';
+export { createStore } from './builder/createStore';
+export { StoreOptions } from './builder/StoreOptions';

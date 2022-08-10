@@ -1,6 +1,6 @@
 {
   "name": "@flexbase/store",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "State management framework for typescript",
   "author": {
     "name": "Flexbase Technologies",
@@ -14,7 +14,8 @@
   "homepage": "https://github.com/flexbase-eng/store#readme",
   "keywords": [
     "flexbase",
-    "state management"
+    "state management",
+    "flux"
   ],
   "repository": {
     "type": "git",
@@ -47,7 +48,10 @@
       "eslint --max-warnings=0"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "@flexbase/logger": "^1.3.0",
+    "@flexbase/observable-subject": "^1.1.0"
+  },
   "devDependencies": {
     "@flexbase/packr": "^1.2.0",
     "@types/jest": "^28.1.4",
@@ -60,6 +64,7 @@
     "husky": "^8.0.1",
     "jest": "^28.1.2",
     "lint-staged": "^13.0.3",
+    "moq.ts": "^9.0.2",
     "prettier": "^2.7.0",
     "rollup": "^2.75.7",
     "rollup-plugin-typescript2": "^0.32.1",
@@ -94,13 +99,6 @@
       "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-      "no-unused-vars": [
-        "warn",
-        {
-          "vars": "all",
-          "args": "none"
-        }
-      ],
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {

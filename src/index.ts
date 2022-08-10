@@ -14,3 +14,4 @@ export { getStoreValue } from './extensions/getStoreValue';
 export { subscribeToStore } from './extensions/subscribeToStore';
 export { setStoreValue } from './extensions/setStoreValue';
 export { resetStoreValue } from './extensions/resetStoreValue';
+export { getStoreSetter } from './extensions/getStoreSetter';

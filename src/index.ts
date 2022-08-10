@@ -8,5 +8,9 @@ export { PersistanceContext, PersistanceEvent } from './persistance/PersistanceC
 export { PersistanceStorage } from './persistance/PersistanceStorage';
 export { PersistanceProvider } from './persistance/PersistanceProvider';
 export { PersistanceStorageProvider } from './persistance/PersistanceStorageProvider';
-export { createStore } from './builder/createStore';
 export { StoreOptions } from './builder/StoreOptions';
+export { createStore } from './extensions/createStore';
+export { getStoreValue } from './extensions/getStoreValue';
+export { subscribeToStore } from './extensions/subscribeToStore';
+export { setStoreValue } from './extensions/setStoreValue';
+export { resetStoreValue } from './extensions/resetStoreValue';

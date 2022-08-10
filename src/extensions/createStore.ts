@@ -1,8 +1,8 @@
 import { defaultStoreComparer } from '../core/StoreComparer';
 import { storageManager } from '../core/StorageManager';
 import { Store } from '../core/Store';
-import { StoreBuilder } from './StoreBuilder';
-import { StoreOptions } from './StoreOptions';
+import { StoreBuilder } from '../builder/StoreBuilder';
+import { StoreOptions } from '../builder/StoreOptions';
 
 export const createStore = <T>(options?: (builder: StoreOptions<T>) => void): Store<T> => {
   const builder = new StoreBuilder<T>();

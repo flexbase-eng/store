@@ -1,6 +1,6 @@
 {
   "name": "@flexbase/store",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "State management framework for typescript",
   "author": {
     "name": "Flexbase Technologies",
@@ -14,7 +14,8 @@
   "homepage": "https://github.com/flexbase-eng/store#readme",
   "keywords": [
     "flexbase",
-    "state management"
+    "state management",
+    "flux"
   ],
   "repository": {
     "type": "git",

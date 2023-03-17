@@ -161,6 +161,7 @@
       "main",
       "module",
       "types",
+      "exports",
       "homepage",
       "repository",
       "bugs",

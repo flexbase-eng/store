@@ -8,14 +8,14 @@ import {
   Subscription,
   SubscriptionCallback,
 } from '@flexbase/observable-subject';
-import { PersistanceProvider } from '../persistance/PersistanceProvider';
-import { PersistanceEvent, PersistanceContext } from '../persistance/PersistanceContext';
-import { Store } from './Store';
-import { StoreComparer } from './StoreComparer';
-import { StoreDispatcher, defaultStoreDispatcher } from './StoreDispatcher';
-import { StoreMiddleware } from './StoreMiddleware';
-import { Setter, SetterCallback } from './StoreSetter';
-import { StoreWrapper } from './StoreWrapper';
+import { PersistanceProvider } from '../persistance/persistance.provider';
+import { PersistanceEvent, PersistanceContext } from '../persistance/persistance.context';
+import { Store } from './store.interface';
+import { StoreComparer } from './store.comparer';
+import { StoreDispatcher, defaultStoreDispatcher } from './store.dispatcher';
+import { StoreMiddleware } from './store.middleware';
+import { Setter, SetterCallback } from './store.setter';
+import { StoreWrapper } from './store.wrapper';
 
 const _storageReverseLookup = new Map<symbol, StorageManager>();
 
@@ -29,13 +29,13 @@ export class StorageManager {
     this._logger = logger;
   }
 
-  register<T>(
+  async register<T>(
     key: symbol,
     default$: T | undefined,
     comparer: StoreComparer<T>,
     middleware: StoreMiddleware<T>[],
     persistanceProvider?: PersistanceProvider<T>
-  ): Store<T> {
+  ): Promise<Store<T>> {
     const existing = this._stores.get(key);
     if (existing) {
       this._logger?.warn(`Duplicate store ${key.toString()} already registered`);
@@ -55,22 +55,20 @@ export class StorageManager {
 
     subjectManager.register(subject, multicastDispatcher);
 
-    this.executeAfterRegister(wrapper);
+    await this.executeAfterRegister(wrapper);
 
     return wrapper;
   }
 
-  private executeAfterRegister<T>(store: StoreWrapper<T>): Promise<void> {
+  private async executeAfterRegister<T>(store: StoreWrapper<T>): Promise<void> {
     const value = store.value;
 
     if (store.persistanceProvider) {
-      return this.handlePersistance(store.persistanceProvider, 'read', value, store);
+      await this.handlePersistance(store.persistanceProvider, 'read', value, store);
     } else if (value) {
       const subContext = { value };
-      return subjectManager.notify(store.subject, subContext);
+      await subjectManager.notify(store.subject, subContext);
     }
-
-    return Promise.resolve();
   }
 
   getValue<T>(store: Store<T>): Readonly<T> | undefined {
@@ -127,7 +125,7 @@ export class StorageManager {
 
       const subContext: SubscriptionContext<T | undefined> = { value: newValue };
 
-      subjectManager.notify(store.subject, subContext);
+      await subjectManager.notify(store.subject, subContext);
     }
   }
 
@@ -140,10 +138,10 @@ export class StorageManager {
       return Promise.resolve();
     }
 
-    return this._setValue(storeWrapper, setter);
+    await this._setValue(storeWrapper, setter);
   }
 
-  resetValue<T>(store: Store<T>): Promise<void> {
+  async resetValue<T>(store: Store<T>): Promise<void> {
     const storeWrapper = this._stores.get(store.key);
 
     if (!storeWrapper) {
@@ -154,21 +152,21 @@ export class StorageManager {
 
     const defaultValue = storeWrapper.default;
 
-    return this._setValue(storeWrapper, defaultValue);
+    await this._setValue(storeWrapper, defaultValue);
   }
 
   getSetter<T>(store: Store<T>): Setter<T> {
     const storeWrapper = this._stores.get(store.key);
 
     if (!storeWrapper) {
-      return (_: SetterCallback<T>) => {
+      return () => {
         this._logger?.warn(`Trying to set value with key '${store.key.toString()}' which has not been registered with this storage manager`);
         return Promise.resolve();
       };
     }
 
-    return (setter: SetterCallback<T>) => {
-      return this._setValue(storeWrapper, setter);
+    return async (setter: SetterCallback<T>) => {
+      return await this._setValue(storeWrapper, setter);
     };
   }
 

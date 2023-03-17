@@ -1,28 +1,20 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "outDir": "dist",
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "declaration": true,
-    "declarationDir": "dist",
+    "resolveJsonModule": true,
+    "noEmit": true,
     "stripInternal": true,
-    "sourceMap": true,
-    "inlineSources": true,
-    "baseUrl": ".",
+    "sourceMap": false
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "tests", "output"],
-  "typedocOptions": {
-    "entryPoints": [
-      "src/index.ts"
-    ],
-    "out": "docs",
-    "theme": "github-wiki"
-  }
+  "include": ["src"]
 }

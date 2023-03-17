@@ -1,6 +1,6 @@
-import { Store } from '../core/Store';
-import { StorageManager } from '../core/StorageManager';
-import { SetterCallback } from '../core/StoreSetter';
+import { Store } from '../core/store.interface';
+import { StorageManager } from '../core/storage.manager';
+import { SetterCallback } from '../core/store.setter';
 
 export const setStoreValue = async <T>(store: Store<T>, setter: SetterCallback<T>): Promise<void> => {
   const mgr = StorageManager.lookupManager(store);

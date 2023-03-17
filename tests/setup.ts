@@ -1,4 +1,5 @@
 import { noopLogger } from '@flexbase/logger';
+import { beforeAll, afterEach, vi } from 'vitest';
 import { storageManager } from '../src/index';
 
 beforeAll(() => {
@@ -6,7 +7,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 export {};

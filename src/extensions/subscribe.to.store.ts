@@ -1,6 +1,6 @@
 import { Subscription, SubscriptionCallback } from '@flexbase/observable-subject';
-import { Store } from '../core/Store';
-import { StorageManager } from '../core/StorageManager';
+import { Store } from '../core/store.interface';
+import { StorageManager } from '../core/storage.manager';
 
 export const subscribeToStore = <T>(store: Store<T>, callback: SubscriptionCallback<T>): Subscription => {
   const mgr = StorageManager.lookupManager(store);

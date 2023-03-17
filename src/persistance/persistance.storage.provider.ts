@@ -1,22 +1,22 @@
 import { Logger } from '@flexbase/logger';
-import { PersistanceContext } from './PersistanceContext';
-import { PersistanceProvider } from './PersistanceProvider';
-import { PersistanceStorage } from './PersistanceStorage';
+import { PersistanceContext } from './persistance.context';
+import { PersistanceProvider } from './persistance.provider';
+import { PersistanceStorage } from './persistance.storage';
 
 export class PersistanceStorageProvider<T> implements PersistanceProvider<T> {
   constructor(private readonly _key: string, private readonly _storage: PersistanceStorage, private readonly _logger?: Logger) {}
 
-  handle(context: PersistanceContext<T>): Promise<void> {
+  async handle(context: PersistanceContext<T>): Promise<void> {
     switch (context.event) {
       case 'read':
-        return this.onRead(context.setter);
+        return await this.onRead(context.setter);
 
       case 'write':
       case 'reset':
         if (context.value === undefined) {
-          return this.onClear();
+          return await this.onClear();
         }
-        return this.onWrite(context.value);
+        return await this.onWrite(context.value);
 
       default:
         //eslint-disable-next-line no-case-declarations

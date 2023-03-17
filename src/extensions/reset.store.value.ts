@@ -1,5 +1,5 @@
-import { Store } from '../core/Store';
-import { StorageManager } from '../core/StorageManager';
+import { Store } from '../core/store.interface';
+import { StorageManager } from '../core/storage.manager';
 
 export const resetStoreValue = async <T>(store: Store<T>): Promise<void> => {
   const mgr = StorageManager.lookupManager(store);

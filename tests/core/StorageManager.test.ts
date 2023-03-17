@@ -1,3 +1,4 @@
+import { test, expect, vi } from 'vitest';
 import { noopLogger } from '@flexbase/logger';
 import { It, Mock, Times } from 'moq.ts';
 import { defaultStoreComparer, defaultStoreDispatcher, PersistanceProvider, storageManager, StorageManager, StoreMiddleware } from '../../src/index';
@@ -17,8 +18,8 @@ test('create storageManager', () => {
   expect(storageManager).not.toBeNull();
 });
 
-test('storageManager get value success', () => {
-  const test = storageManager.register(Symbol(), { id: 1, name: 'test' }, (_, $) => true, []);
+test('storageManager get value success', async () => {
+  const test = await storageManager.register(Symbol(), { id: 1, name: 'test' }, (_, $) => true, []);
   const value = storageManager.getValue(test);
 
   expect(value).not.toBeUndefined();
@@ -27,20 +28,20 @@ test('storageManager get value success', () => {
   expect(value!.name).toBe('test');
 });
 
-test('storageManager get value undefined', () => {
-  const test = storageManager.register(Symbol(), undefined, (_, $) => true, []);
+test('storageManager get value undefined', async () => {
+  const test = await storageManager.register(Symbol(), undefined, (_, $) => true, []);
   const value = storageManager.getValue(test);
 
   expect(value).toBeUndefined();
 });
 
-test('storageManager duplicate registration warning', () => {
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+test('storageManager duplicate registration warning', async () => {
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
   const key = Symbol('DupTest');
 
-  const value1 = storageManager.register<number>(key, 1, (_, $) => true, []);
-  const value2 = storageManager.register<number>(key, 1, (_, $) => true, []);
+  const value1 = await storageManager.register<number>(key, 1, (_, $) => true, []);
+  const value2 = await storageManager.register<number>(key, 1, (_, $) => true, []);
 
   expect(value1).not.toBeNull();
   expect(value2).not.toBeNull();
@@ -49,12 +50,12 @@ test('storageManager duplicate registration warning', () => {
   expect(loggerMethod).toBeCalledTimes(1);
 });
 
-test('multiple storageManager duplicate registration warning', () => {
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+test('multiple storageManager duplicate registration warning', async () => {
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
   const key = Symbol('DupTest');
 
-  const value1 = storageManager.register<number>(key, 1, (_, $) => true, []);
+  const value1 = await storageManager.register<number>(key, 1, (_, $) => true, []);
 
   const sm = new StorageManager(undefined, noopLogger);
 
@@ -68,7 +69,7 @@ test('multiple storageManager duplicate registration warning', () => {
 });
 
 test('storageManager get setter', async () => {
-  const test = storageManager.register(Symbol(), { id: 0, name: 't' }, defaultStoreComparer, []);
+  const test = await storageManager.register(Symbol(), { id: 0, name: 't' }, defaultStoreComparer, []);
 
   const setTest = storageManager.getSetter(test);
 
@@ -83,7 +84,7 @@ test('storageManager get setter', async () => {
 });
 
 test('storageManager set value', async () => {
-  const test = storageManager.register(Symbol(), { id: 0, name: 't' }, defaultStoreComparer, []);
+  const test = await storageManager.register(Symbol(), { id: 0, name: 't' }, defaultStoreComparer, []);
 
   await storageManager.setValue(test, { id: 1, name: 'test' });
 
@@ -96,9 +97,9 @@ test('storageManager set value', async () => {
 });
 
 test('storageManager set value not registered', async () => {
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
-  const test = storageManager.register(Symbol(), { id: 0, name: 't' }, defaultStoreComparer, []);
+  const test = await storageManager.register(Symbol(), { id: 0, name: 't' }, defaultStoreComparer, []);
 
   const sm = new StorageManager(undefined, noopLogger);
   await sm.setValue(test, { id: 1, name: 'test' });
@@ -115,14 +116,14 @@ test('storageManager set value not registered', async () => {
 
 test('storageManager single middleware', async () => {
   const fn = { m: (id: number) => id + 1 };
-  const fnMock = jest.spyOn(fn, 'm');
+  const fnMock = vi.spyOn(fn, 'm');
 
   const middleware: StoreMiddleware<TestValue> = (context, next) => {
     fn.m(context.newValue!.id);
     return next();
   };
 
-  const test = storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, [middleware]);
+  const test = await storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, [middleware]);
 
   await storageManager.setValue(test, { id: 1, name: 'test' });
 
@@ -138,7 +139,7 @@ test('storageManager single middleware', async () => {
 
 test('storageManager multiple middleware', async () => {
   const fn = { m: (id: number) => id + 1 };
-  const fnMock = jest.spyOn(fn, 'm');
+  const fnMock = vi.spyOn(fn, 'm');
 
   const middleware1: StoreMiddleware<number> = async (context, next) => {
     await new Promise(_ => setTimeout(_, context.newValue));
@@ -150,7 +151,7 @@ test('storageManager multiple middleware', async () => {
     return next();
   };
 
-  const test = storageManager.register(Symbol(), undefined, defaultStoreComparer, [middleware2, middleware1, middleware2]);
+  const test = await storageManager.register(Symbol(), undefined, defaultStoreComparer, [middleware2, middleware1, middleware2]);
 
   const setTest = storageManager.getSetter(test);
 
@@ -167,14 +168,14 @@ test('storageManager multiple middleware', async () => {
 
 test('storageManager default comparer', async () => {
   const fn = { m: (id?: string) => id };
-  const fnMock = jest.spyOn(fn, 'm');
+  const fnMock = vi.spyOn(fn, 'm');
 
   const middleware: StoreMiddleware<string> = (context, next) => {
     fn.m(context.newValue);
     return next();
   };
 
-  const test = storageManager.register(Symbol(), undefined, defaultStoreComparer, [middleware]);
+  const test = await storageManager.register(Symbol(), undefined, defaultStoreComparer, [middleware]);
 
   const setTest = storageManager.getSetter(test);
 
@@ -195,7 +196,7 @@ test('storageManager default comparer', async () => {
 
 test('storageManager default comparer for object', async () => {
   const fn = { m: (id?: string) => id };
-  const fnMock = jest.spyOn(fn, 'm');
+  const fnMock = vi.spyOn(fn, 'm');
 
   const testValue = { name: 'test' };
 
@@ -204,7 +205,7 @@ test('storageManager default comparer for object', async () => {
     return next();
   };
 
-  const test = storageManager.register<typeof testValue>(Symbol(), undefined, defaultStoreComparer, [middleware]);
+  const test = await storageManager.register<typeof testValue>(Symbol(), undefined, defaultStoreComparer, [middleware]);
 
   const setTest = storageManager.getSetter(test);
 
@@ -224,11 +225,11 @@ test('storageManager default comparer for object', async () => {
   expect(fnMock).toBeCalledTimes(1);
 });
 
-test('storageManager getValue not registered', () => {
+test('storageManager getValue not registered', async () => {
   const key = Symbol('NotRegistered');
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
-  const testState = storageManager.register<number>(key, 1, defaultStoreComparer, []);
+  const testState = await storageManager.register<number>(key, 1, defaultStoreComparer, []);
 
   const sm = new StorageManager(defaultStoreDispatcher, noopLogger);
 
@@ -240,9 +241,9 @@ test('storageManager getValue not registered', () => {
 
 test('storageManager getSetter not registered', async () => {
   const key = Symbol('NotRegistered');
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
-  const testState = storageManager.register<number>(key, 100, defaultStoreComparer, []);
+  const testState = await storageManager.register<number>(key, 100, defaultStoreComparer, []);
 
   const sm = new StorageManager(defaultStoreDispatcher, noopLogger);
 
@@ -258,9 +259,9 @@ test('storageManager getSetter not registered', async () => {
 });
 
 test('storageManager subscribe success', async () => {
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
-  const testState = storageManager.register<number>(Symbol('Test'), 100, (a, b) => a === b, []);
+  const testState = await storageManager.register<number>(Symbol('Test'), 100, (a, b) => a === b, []);
 
   const subscription = storageManager.subscribe(testState, _ => Promise.resolve());
 
@@ -269,9 +270,9 @@ test('storageManager subscribe success', async () => {
 });
 
 test('storageManager subscribe not registered', async () => {
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
-  const testState = storageManager.register<number>(Symbol('Test'), 100, (a, b) => a === b, []);
+  const testState = await storageManager.register<number>(Symbol('Test'), 100, (a, b) => a === b, []);
 
   const sm = new StorageManager(defaultStoreDispatcher, noopLogger);
 
@@ -287,7 +288,7 @@ test('storageManager persistance write', async () => {
 
   mockPersistanceProvider.setup(m => m.handle(It.IsAny())).returnsAsync();
 
-  const test = storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, [], mockPersistanceProvider.object());
+  const test = await storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, [], mockPersistanceProvider.object());
 
   await storageManager.setValue(test, { id: 1, name: 'test' });
 
@@ -302,7 +303,7 @@ test('storageManager persistance write', async () => {
 });
 
 test('storageManager reset undefined', async () => {
-  const test = storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, []);
+  const test = await storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, []);
 
   await storageManager.setValue(test, { id: 1, name: 'test' });
   let value = storageManager.getValue(test);
@@ -319,7 +320,7 @@ test('storageManager reset undefined', async () => {
 });
 
 test('storageManager reset value', async () => {
-  const test = storageManager.register<TestValue>(Symbol(), { id: 1, name: 'test' }, defaultStoreComparer, []);
+  const test = await storageManager.register<TestValue>(Symbol(), { id: 1, name: 'test' }, defaultStoreComparer, []);
 
   await storageManager.setValue(test, { id: 2, name: 'hi' });
   let value = storageManager.getValue(test);
@@ -338,9 +339,9 @@ test('storageManager reset value', async () => {
 });
 
 test('storageManager reset not registered', async () => {
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
-  const test = storageManager.register<TestValue>(Symbol(), { id: 1, name: 'test' }, defaultStoreComparer, []);
+  const test = await storageManager.register<TestValue>(Symbol(), { id: 1, name: 'test' }, defaultStoreComparer, []);
 
   await storageManager.setValue(test, { id: 2, name: 'hi' });
 

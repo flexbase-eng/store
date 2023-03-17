@@ -1,7 +1,7 @@
-import { StoreComparer } from '../core/StoreComparer';
-import { StoreMiddleware } from '../core/StoreMiddleware';
-import { PersistanceProvider } from '../persistance/PersistanceProvider';
-import { StorageManager } from '../core/StorageManager';
+import { StoreComparer } from '../core/store.comparer';
+import { StoreMiddleware } from '../core/store.middleware';
+import { PersistanceProvider } from '../persistance/persistance.provider';
+import { StorageManager } from '../core/storage.manager';
 
 export interface StoreOptions<T> {
   storageManager(storageManager: StorageManager): Omit<StoreOptions<T>, 'storageManager'>;

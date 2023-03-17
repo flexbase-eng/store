@@ -115,3 +115,6 @@ dist
 
 cypress/videos
 cypress/screenshots
+
+#lint cache
+.eslintcache

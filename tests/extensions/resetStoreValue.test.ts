@@ -1,7 +1,8 @@
+import { test, expect } from 'vitest';
 import { storageManager, defaultStoreComparer, resetStoreValue } from '../../src/index';
 
 test('resetStoreValue', async () => {
-  const test = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+  const test = await storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
 
   await storageManager.setValue(test, 1);
   let value = storageManager.getValue(test);

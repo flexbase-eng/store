@@ -1,8 +1,8 @@
-import { StoreComparer } from '../core/StoreComparer';
-import { StoreMiddleware } from '../core/StoreMiddleware';
-import { PersistanceProvider } from '../persistance/PersistanceProvider';
-import { StoreOptions } from './StoreOptions';
-import { StorageManager } from '../core/StorageManager';
+import { StoreComparer } from '../core/store.comparer';
+import { StoreMiddleware } from '../core/store.middleware';
+import { PersistanceProvider } from '../persistance/persistance.provider';
+import { StoreOptions } from './store.options';
+import { StorageManager } from '../core/storage.manager';
 
 /** @internal */
 export class StoreBuilder<T> implements StoreOptions<T> {

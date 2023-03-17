@@ -1,26 +1,27 @@
+import { test, expect, vi } from 'vitest';
 import { noopLogger } from '@flexbase/logger';
 import { It, Mock, Times } from 'moq.ts';
 import { createStore, defaultStoreDispatcher, StoreMiddleware, StorageManager, PersistanceProvider } from '../../src/index';
 
-test('createStore', () => {
-  const value = createStore();
+test('createStore', async () => {
+  const value = await createStore();
 
   expect(value).not.toBeNull();
 });
 
-test('createStore generic', () => {
-  const value = createStore<number>();
+test('createStore generic', async () => {
+  const value = await createStore<number>();
 
   expect(value).not.toBeNull();
 });
 
-test('createStore duplicate key warning', () => {
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+test('createStore duplicate key warning', async () => {
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
   const key = Symbol('DupTest');
 
-  const value1 = createStore<number>(options => options.key(key));
-  const value2 = createStore<number>(options => options.key(key));
+  const value1 = await createStore<number>(options => options.key(key));
+  const value2 = await createStore<number>(options => options.key(key));
 
   expect(value1).not.toBeNull();
   expect(value2).not.toBeNull();
@@ -36,7 +37,7 @@ test('createStore builder', async () => {
   mockPersistanceProvider.setup(m => m.handle(It.IsAny())).returnsAsync();
 
   const fn = { m: (id: string) => id };
-  const fnMock = jest.spyOn(fn, 'm');
+  const fnMock = vi.spyOn(fn, 'm');
 
   interface Test {
     v1: string;
@@ -47,7 +48,7 @@ test('createStore builder', async () => {
     fn.m(context.newValue!.v1);
   };
 
-  const testState = createStore<Test>(options => {
+  const testState = await createStore<Test>(options => {
     options
       .key('Test')
       .default({ v1: 'test', v2: false })

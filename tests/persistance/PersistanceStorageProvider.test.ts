@@ -1,3 +1,4 @@
+import { test, expect, vi } from 'vitest';
 import { PersistanceStorage, PersistanceStorageProvider } from '../../src/index';
 import { It, Mock, Times } from 'moq.ts';
 import { noopLogger } from '@flexbase/logger';
@@ -10,8 +11,8 @@ const testStoreage2 = [
 
 test.each([testStoreage1, testStoreage2, null, undefined, 1])('PersistanceStorageProvider read', async storageItem => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const mockSetter = jest.fn((value: any | undefined) => {});
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
   mockStorage.setup(m => m.getItem(It.IsAny())).returnsAsync(JSON.stringify(storageItem));
 
@@ -28,8 +29,8 @@ test.each([testStoreage1, testStoreage2, null, undefined, 1])('PersistanceStorag
 
 test('PersistanceStorageProvider read exception', async () => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const mockSetter = jest.fn((value: any | undefined) => {});
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
   mockStorage.setup(m => m.getItem(It.IsAny())).throwsAsync(Error());
 
@@ -45,8 +46,8 @@ test('PersistanceStorageProvider read exception', async () => {
 
 test('PersistanceStorageProvider read json exception', async () => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const mockSetter = jest.fn((value: any | undefined) => {});
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
   mockStorage.setup(m => m.getItem(It.IsAny())).returnsAsync('!');
 
@@ -63,8 +64,8 @@ test('PersistanceStorageProvider read json exception', async () => {
 
 test.each([testStoreage1, testStoreage2, 1])('PersistanceStorageProvider write', async storageItem => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
-  const mockSetter = jest.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
 
   mockStorage.setup(m => m.setItem(It.IsAny(), It.IsAny())).returnsAsync();
 
@@ -80,8 +81,8 @@ test.each([testStoreage1, testStoreage2, 1])('PersistanceStorageProvider write',
 
 test('PersistanceStorageProvider write undefined', async () => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
-  const mockSetter = jest.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
 
   mockStorage.setup(m => m.removeItem(It.IsAny())).returnsAsync();
 
@@ -97,8 +98,8 @@ test('PersistanceStorageProvider write undefined', async () => {
 
 test.each([testStoreage1, testStoreage2, 1])('PersistanceStorageProvider write merge', async storageItem => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
-  const mockSetter = jest.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
 
   mockStorage.setup(m => m.mergeItem!(It.IsAny(), It.IsAny())).returnsAsync();
 
@@ -114,8 +115,8 @@ test.each([testStoreage1, testStoreage2, 1])('PersistanceStorageProvider write m
 
 test.each([testStoreage1, testStoreage2, 1])('PersistanceStorageProvider write exception', async storageItem => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
-  const mockSetter = jest.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
 
   mockStorage.setup(m => m.setItem(It.IsAny(), It.IsAny())).throwsAsync(Error());
 
@@ -131,8 +132,8 @@ test.each([testStoreage1, testStoreage2, 1])('PersistanceStorageProvider write e
 
 test('PersistanceStorageProvider reset', async () => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
-  const mockSetter = jest.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
 
   mockStorage.setup(m => m.removeItem(It.IsAny())).returnsAsync();
 
@@ -148,8 +149,8 @@ test('PersistanceStorageProvider reset', async () => {
 
 test('PersistanceStorageProvider reset with value', async () => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
-  const mockSetter = jest.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
 
   mockStorage.setup(m => m.setItem(It.IsAny(), It.IsAny())).returnsAsync();
 
@@ -165,8 +166,8 @@ test('PersistanceStorageProvider reset with value', async () => {
 
 test('PersistanceStorageProvider reset exception', async () => {
   const mockStorage = new Mock<PersistanceStorage>();
-  const loggerMethod = jest.spyOn(noopLogger, 'warn');
-  const mockSetter = jest.fn((value: any | undefined) => {});
+  const loggerMethod = vi.spyOn(noopLogger, 'warn');
+  const mockSetter = vi.fn((value: any | undefined) => {});
 
   mockStorage.setup(m => m.removeItem(It.IsAny())).throwsAsync(Error());
 

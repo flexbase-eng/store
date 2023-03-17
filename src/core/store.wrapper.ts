@@ -1,8 +1,8 @@
 import { Subject } from '@flexbase/observable-subject';
-import { PersistanceProvider } from '../persistance/PersistanceProvider';
-import { Store } from './Store';
-import { StoreComparer } from './StoreComparer';
-import { StoreMiddleware } from './StoreMiddleware';
+import { PersistanceProvider } from '../persistance/persistance.provider';
+import { Store } from './store.interface';
+import { StoreComparer } from './store.comparer';
+import { StoreMiddleware } from './store.middleware';
 
 interface ValueWrapper<T> {
   value: T;

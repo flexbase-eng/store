@@ -1,4 +1,4 @@
-import { StoreMiddleware, StoreMiddlewareContext } from './StoreMiddleware';
+import { StoreMiddleware, StoreMiddlewareContext } from './store.middleware';
 
 /** Represents a store middleware dispatcher */
 export interface StoreDispatcher {
@@ -11,16 +11,16 @@ export interface StoreDispatcher {
 }
 
 class DefaultStoreDispatcher implements StoreDispatcher {
-  dispatch<T>(context: StoreMiddlewareContext<T>, middleware: StoreMiddleware<T>[]): Promise<void> {
-    return this.invokeMiddleware(context, middleware);
+  async dispatch<T>(context: StoreMiddlewareContext<T>, middleware: StoreMiddleware<T>[]): Promise<void> {
+    return await this.invokeMiddleware(context, middleware);
   }
 
-  private invokeMiddleware<T>(context: StoreMiddlewareContext<T>, middleware: StoreMiddleware<T>[]): Promise<void> {
+  private async invokeMiddleware<T>(context: StoreMiddlewareContext<T>, middleware: StoreMiddleware<T>[]): Promise<void> {
     if (!middleware.length) return Promise.resolve();
 
     const mw = middleware[0];
 
-    return mw(context, () => this.invokeMiddleware(context, middleware.slice(1)));
+    return await mw(context, async () => await this.invokeMiddleware(context, middleware.slice(1)));
   }
 }
 

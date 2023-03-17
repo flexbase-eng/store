@@ -1,6 +1,7 @@
+import { test, expect } from 'vitest';
 import { Mock } from 'moq.ts';
 import { defaultStoreComparer, PersistanceProvider, storageManager, StoreMiddleware } from '../../src/index';
-import { StoreBuilder } from '../../src/builder/StoreBuilder';
+import { StoreBuilder } from '../../src/builder/store.builder';
 
 test('StoreBuilder', async () => {
   const builder = new StoreBuilder<number>();

@@ -1,7 +1,8 @@
+import { test, expect } from 'vitest';
 import { storageManager, defaultStoreComparer, subscribeToStore } from '../../src/index';
 
 test('subscribeToStore', async () => {
-  const test = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+  const test = await storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
 
   const subscription = subscribeToStore(test, _ => Promise.resolve());
 

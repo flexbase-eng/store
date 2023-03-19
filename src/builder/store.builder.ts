@@ -1,46 +1,54 @@
 import { StoreComparer } from '../core/store.comparer';
 import { StoreMiddleware } from '../core/store.middleware';
 import { PersistanceProvider } from '../persistance/persistance.provider';
-import { StoreOptions } from './store.options';
+import { StoreOptions, StoreOptionsFluent } from './store.options';
 import { StorageManager } from '../core/storage.manager';
 
 /** @internal */
-export class StoreBuilder<T> implements StoreOptions<T> {
-  _storageManager: StorageManager | undefined;
-  _key: symbol | undefined;
-  _default: T | undefined;
-  _comparer: StoreComparer<T> | undefined;
-  _middleware: StoreMiddleware<T>[] = [];
-  _persistanceProvider: PersistanceProvider<T> | undefined;
+export class StoreBuilder<T> implements StoreOptionsFluent<T> {
+  private readonly _options: StoreOptions<T>;
 
-  storageManager(storageManager: StorageManager): Omit<StoreOptions<T>, 'storageManager'> {
-    this._storageManager = storageManager;
+  constructor(options?: ((builder: StoreOptionsFluent<T>) => void) | StoreOptions<T>) {
+    if (typeof options === 'function') {
+      this._options = {};
+      options(this);
+    } else {
+      this._options = { ...options };
+    }
+  }
+
+  storageManager(storageManager: StorageManager): Omit<StoreOptionsFluent<T>, 'storageManager'> {
+    this._options.storageManager = storageManager;
     return this;
   }
 
-  key(key: symbol | string): Omit<StoreOptions<T>, 'key'> {
-    if (typeof key === 'string') this._key = Symbol(key);
-    else this._key = key;
+  key(key: symbol | string): Omit<StoreOptionsFluent<T>, 'key'> {
+    if (typeof key === 'string') this._options.key = Symbol(key);
+    else this._options.key = key;
     return this;
   }
 
-  default(t: T): Omit<StoreOptions<T>, 'default'> {
-    this._default = t;
+  defaultValue(value: T): Omit<StoreOptionsFluent<T>, 'default'> {
+    this._options.defaultValue = value;
     return this;
   }
 
-  comparer(comparer: StoreComparer<T>): Omit<StoreOptions<T>, 'comparer'> {
-    this._comparer = comparer;
+  comparer(comparer: StoreComparer<T>): Omit<StoreOptionsFluent<T>, 'comparer'> {
+    this._options.comparer = comparer;
     return this;
   }
 
-  middleware(...middleware: StoreMiddleware<T>[]): Omit<StoreOptions<T>, 'middleware'> {
-    this._middleware = middleware;
+  middleware(...middleware: StoreMiddleware<T>[]): Omit<StoreOptionsFluent<T>, 'middleware'> {
+    this._options.middleware = middleware;
     return this;
   }
 
-  persistance(persistanceProvider: PersistanceProvider<T>): Omit<StoreOptions<T>, 'persistance'> {
-    this._persistanceProvider = persistanceProvider;
+  persistanceProvider(persistanceProvider: PersistanceProvider<T>): Omit<StoreOptionsFluent<T>, 'persistance'> {
+    this._options.persistanceProvider = persistanceProvider;
     return this;
+  }
+
+  build(): StoreOptions<T> {
+    return this._options;
   }
 }

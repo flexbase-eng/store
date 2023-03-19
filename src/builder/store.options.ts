@@ -3,11 +3,20 @@ import { StoreMiddleware } from '../core/store.middleware';
 import { PersistanceProvider } from '../persistance/persistance.provider';
 import { StorageManager } from '../core/storage.manager';
 
-export interface StoreOptions<T> {
-  storageManager(storageManager: StorageManager): Omit<StoreOptions<T>, 'storageManager'>;
-  key(key: symbol | string): Omit<StoreOptions<T>, 'key'>;
-  default(t: T): Omit<StoreOptions<T>, 'default'>;
-  comparer(comparer: StoreComparer<T>): Omit<StoreOptions<T>, 'comparer'>;
-  middleware(...middleware: StoreMiddleware<T>[]): Omit<StoreOptions<T>, 'middleware'>;
-  persistance(persistanceProvider: PersistanceProvider<T>): Omit<StoreOptions<T>, 'persistance'>;
+export type StoreOptions<T> = {
+  storageManager?: StorageManager;
+  key?: symbol;
+  defaultValue?: T;
+  comparer?: StoreComparer<T>;
+  middleware?: StoreMiddleware<T>[];
+  persistanceProvider?: PersistanceProvider<T>;
+};
+
+export interface StoreOptionsFluent<T> {
+  storageManager(storageManager: StorageManager): Omit<StoreOptionsFluent<T>, 'storageManager'>;
+  key(key: symbol | string): Omit<StoreOptionsFluent<T>, 'key'>;
+  defaultValue(value: T): Omit<StoreOptionsFluent<T>, 'defaultValue'>;
+  comparer(comparer: StoreComparer<T>): Omit<StoreOptionsFluent<T>, 'comparer'>;
+  middleware(...middleware: StoreMiddleware<T>[]): Omit<StoreOptionsFluent<T>, 'middleware'>;
+  persistanceProvider(persistanceProvider: PersistanceProvider<T>): Omit<StoreOptionsFluent<T>, 'persistanceProvider'>;
 }

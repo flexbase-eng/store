@@ -29,13 +29,13 @@ export class StorageManager {
     this._logger = logger;
   }
 
-  async register<T>(
+  register<T>(
     key: symbol,
     default$: T | undefined,
     comparer: StoreComparer<T>,
     middleware: StoreMiddleware<T>[],
     persistanceProvider?: PersistanceProvider<T>
-  ): Promise<Store<T>> {
+  ): Store<T> {
     const existing = this._stores.get(key);
     if (existing) {
       this._logger?.warn(`Duplicate store ${key.toString()} already registered`);
@@ -55,18 +55,28 @@ export class StorageManager {
 
     subjectManager.register(subject, multicastDispatcher);
 
-    await this.executeAfterRegister(wrapper);
+    // TODO instead of async, add new registrations to a initial execution list
+    // that gets run by the manager
+    // how can we hook into the render/update loop to auto run it?
+
+    this.executeAfterRegister(wrapper)
+      .then(() => {
+        this._logger?.debug('executeAfterRegister finished');
+      })
+      .catch(err => {
+        this._logger?.error(err);
+      });
 
     return wrapper;
   }
 
   private async executeAfterRegister<T>(store: StoreWrapper<T>): Promise<void> {
-    const value = store.value;
-
     if (store.persistanceProvider) {
-      await this.handlePersistance(store.persistanceProvider, 'read', value, store);
-    } else if (value) {
-      const subContext = { value };
+      await this.handlePersistance(store.persistanceProvider, 'read', store.value, store);
+    }
+
+    if (store.value) {
+      const subContext = { value: store.value };
       await subjectManager.notify(store.subject, subContext);
     }
   }

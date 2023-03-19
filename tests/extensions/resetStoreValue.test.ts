@@ -1,24 +1,43 @@
-import { test, expect } from 'vitest';
+import { test, expect, describe } from 'vitest';
 import { storageManager, defaultStoreComparer, resetStoreValue } from '../../src/index';
 
-test('resetStoreValue', async () => {
-  const test = await storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+describe('resetStoreValue', () => {
+  test('default is undefined', async () => {
+    const test = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
 
-  await storageManager.setValue(test, 1);
-  let value = storageManager.getValue(test);
+    await storageManager.setValue(test, 1);
+    let value = storageManager.getValue(test);
 
-  expect(value).not.toBeUndefined();
-  expect(value).toBe(1);
+    expect(value).not.toBeUndefined();
+    expect(value).toBe(1);
 
-  await resetStoreValue(test);
+    await resetStoreValue(test);
 
-  value = storageManager.getValue(test);
+    value = storageManager.getValue(test);
 
-  expect(value).toBeUndefined();
-});
+    expect(value).toBeUndefined();
+  });
 
-test('resetStoreValue not registered', async () => {
-  const key = Symbol('test');
+  test('to default', async () => {
+    const test = storageManager.register<number>(Symbol(), 42, defaultStoreComparer, []);
 
-  await expect(resetStoreValue({ key })).rejects.toThrow(`Unable to find storage manager for ${key.toString()}`);
+    await storageManager.setValue(test, 1);
+    let value = storageManager.getValue(test);
+
+    expect(value).not.toBeUndefined();
+    expect(value).toBe(1);
+
+    await resetStoreValue(test);
+
+    value = storageManager.getValue(test);
+
+    expect(value).not.toBeUndefined();
+    expect(value).toBe(42);
+  });
+
+  test('not registered', async () => {
+    const key = Symbol('test');
+
+    await expect(resetStoreValue({ key })).rejects.toThrow(`Unable to find storage manager for ${key.toString()}`);
+  });
 });

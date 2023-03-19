@@ -1,30 +1,54 @@
-import { test, expect } from 'vitest';
-import { storageManager, defaultStoreComparer, setStoreValue } from '../../src/index';
+import { test, expect, describe, beforeEach } from 'vitest';
+import { storageManager, defaultStoreComparer, setStoreValue, Store } from '../../src/index';
 
-test('setStoreValue', async () => {
-  const test = await storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+describe('setStoreValue', () => {
+  test('success', async () => {
+    const test: Store<number> = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
 
-  await setStoreValue(test, 1);
-  let value = storageManager.getValue(test);
+    await setStoreValue(test, 1);
+    const value = storageManager.getValue(test);
 
-  expect(value).not.toBeUndefined();
-  expect(value).toBe(1);
+    expect(value).not.toBeUndefined();
+    expect(value).toBe(1);
+  });
 
-  await setStoreValue(test, undefined);
-  value = storageManager.getValue(test);
+  test('set undefined', async () => {
+    const test: Store<number> = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
 
-  expect(value).toBeUndefined();
+    await setStoreValue(test, undefined);
+    const value = storageManager.getValue(test);
 
-  await setStoreValue(test, _ => 100);
-  value = storageManager.getValue(test);
+    expect(value).toBeUndefined();
+  });
 
-  expect(value).not.toBeUndefined();
-  expect(value).toBe(100);
+  test('set with callback', async () => {
+    const test: Store<number> = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
 
-  await setStoreValue(test, _ => undefined);
-  value = storageManager.getValue(test);
+    await setStoreValue(test, _ => 100);
+    const value = storageManager.getValue(test);
 
-  expect(value).toBeUndefined();
+    expect(value).not.toBeUndefined();
+    expect(value).toBe(100);
+  });
+
+  test('set with callback advanced', async () => {
+    const test: Store<number> = storageManager.register<number>(Symbol(), 100, defaultStoreComparer, []);
+
+    await setStoreValue(test, currentValue => (currentValue ? Math.min(42, currentValue) : 0));
+    const value = storageManager.getValue(test);
+
+    expect(value).not.toBeUndefined();
+    expect(value).toBe(42);
+  });
+
+  test('set undefined with callback', async () => {
+    const test: Store<number> = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+
+    await setStoreValue(test, _ => undefined);
+    const value = storageManager.getValue(test);
+
+    expect(value).toBeUndefined();
+  });
 });
 
 test('setStoreValue not registered', async () => {

@@ -3,25 +3,25 @@ import { noopLogger } from '@flexbase/logger';
 import { It, Mock, Times } from 'moq.ts';
 import { createStore, defaultStoreDispatcher, StoreMiddleware, StorageManager, PersistanceProvider } from '../../src/index';
 
-test('createStore', async () => {
-  const value = await createStore();
+test('createStore', () => {
+  const value = createStore();
 
   expect(value).not.toBeNull();
 });
 
-test('createStore generic', async () => {
-  const value = await createStore<number>();
+test('createStore generic', () => {
+  const value = createStore<number>();
 
   expect(value).not.toBeNull();
 });
 
-test('createStore duplicate key warning', async () => {
+test('createStore duplicate key warning', () => {
   const loggerMethod = vi.spyOn(noopLogger, 'warn');
 
   const key = Symbol('DupTest');
 
-  const value1 = await createStore<number>(options => options.key(key));
-  const value2 = await createStore<number>(options => options.key(key));
+  const value1 = createStore<number>(options => options.key(key));
+  const value2 = createStore<number>(options => options.key(key));
 
   expect(value1).not.toBeNull();
   expect(value2).not.toBeNull();
@@ -48,14 +48,14 @@ test('createStore builder', async () => {
     fn.m(context.newValue!.v1);
   };
 
-  const testState = await createStore<Test>(options => {
+  const testState = createStore<Test>(options => {
     options
       .key('Test')
-      .default({ v1: 'test', v2: false })
+      .defaultValue({ v1: 'test', v2: false })
       .storageManager(sm)
       .comparer((a, b) => a === b)
       .middleware(middleware)
-      .persistance(mockPersistanceProvider.object());
+      .persistanceProvider(mockPersistanceProvider.object());
   });
 
   let value = sm.getValue(testState);

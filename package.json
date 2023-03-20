@@ -21,12 +21,12 @@
     "type": "git",
     "url": "git+https://github.com/flexbase-eng/store.git"
   },
-  "main": "./index.cjs",
-  "module": "./index.js",
+  "main": "./index.cjs.js",
+  "module": "./index.es.js",
   "exports": {
     ".": {
-      "import": "./index.js",
-      "require": "./index.cjs"
+      "import": "./index.es.js",
+      "require": "./index.cjs.js"
     }
   },
   "files": [
@@ -170,6 +170,14 @@
         {
           "preset": "angular",
           "releaseRules": [
+            {
+              "breaking": true,
+              "release": "major"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            },
             {
               "message": "*",
               "release": "patch"

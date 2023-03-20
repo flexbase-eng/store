@@ -14,7 +14,8 @@ export default defineConfig({
     lib: {
       entry: resolvePath('./src/index.ts'),
       name: pkg.name,
-      fileName: 'index',
+      fileName: format => `index.${format}.js`,
+      formats: ['es', 'cjs'],
     },
     rollupOptions: {
       plugins: [typescript()],

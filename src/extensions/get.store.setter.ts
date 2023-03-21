@@ -1,6 +1,6 @@
-import { Store } from '../core/store.interface';
-import { StorageManager } from '../core/storage.manager';
-import { Setter } from '../core/store.setter';
+import { Store } from '../core/store.interface.js';
+import { StorageManager } from '../core/storage.manager.js';
+import { Setter } from '../core/store.setter.js';
 
 export const getStoreSetter = <T>(store: Store<T>): Setter<T> => {
   const mgr = StorageManager.lookupManager(store);

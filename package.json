@@ -21,13 +21,10 @@
     "type": "git",
     "url": "git+https://github.com/flexbase-eng/store.git"
   },
-  "main": "./index.cjs.js",
-  "module": "./index.es.js",
-  "exports": {
-    ".": {
-      "import": "./index.es.js",
-      "require": "./index.cjs.js"
-    }
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "engines": {
+    "node": ">=17.0.0"
   },
   "files": [
     "dist"
@@ -51,8 +48,8 @@
     "src/**/*.{ts,tsx,css,json}": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@flexbase/logger": "latest",
-    "@flexbase/observable-subject": "1.4.3"
+    "@flexbase/logger": "^1.4.3",
+    "@flexbase/observable-subject": "2.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
@@ -61,38 +58,43 @@
     "@rollup/plugin-typescript": "^11.0.0",
     "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/git": "^10.0.1",
-    "@types/node": "^18.15.3",
-    "@typescript-eslint/eslint-plugin": "latest",
-    "@typescript-eslint/parser": "latest",
+    "@types/node": "^18.15.5",
+    "@typescript-eslint/eslint-plugin": "5.56.0",
+    "@typescript-eslint/parser": "5.56.0",
     "@vitejs/plugin-react": "latest",
-    "@vitest/coverage-c8": "latest",
-    "@vitest/coverage-istanbul": "latest",
+    "@vitest/coverage-c8": "0.29.7",
+    "@vitest/coverage-istanbul": "0.29.7",
     "eslint": "latest",
-    "eslint-config-prettier": "latest",
+    "eslint-config-prettier": "8.8.0",
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-check-file": "latest",
     "eslint-plugin-filenames-simple": "latest",
     "eslint-plugin-import": "latest",
+    "eslint-plugin-require-extensions": "^0.1.2",
     "husky": "latest",
     "is-ci": "^3.0.1",
     "lint-staged": "latest",
     "moq.ts": "^10.0.2",
-    "prettier": "2.8.4",
-    "semantic-release": "^20.1.1",
+    "prettier": "2.8.6",
+    "semantic-release": "^20.1.3",
     "typescript": "^5.0.2",
-    "vite": "latest",
+    "vite": "4.2.1",
     "vite-plugin-dts": "^2.1.0",
-    "vitest": "latest"
+    "vitest": "0.29.7"
   },
   "eslintConfig": {
     "env": {
       "browser": true,
-      "es2021": true
+      "es2022": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest"
     },
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended",
-      "plugin:import/recommended",
+      "plugin:require-extensions/recommended",
       "plugin:import/typescript",
       "eslint-config-prettier"
     ],
@@ -100,13 +102,14 @@
     "plugins": [
       "filenames-simple",
       "check-file",
+      "require-extensions",
       "import"
     ],
     "settings": {
       "import/resolver": {
         "node": {
           "paths": [
-            "src"
+            "./src/**/*"
           ],
           "extensions": [
             ".js",
@@ -175,7 +178,11 @@
               "release": "major"
             },
             {
-              "type": "feat",
+              "message": "major*",
+              "release": "major"
+            },
+            {
+              "message": "feat*",
               "release": "minor"
             },
             {
@@ -192,7 +199,7 @@
     ]
   },
   "packr": {
-    "output": "dist",
+    "output": "output",
     "properties": [
       "name",
       "version",
@@ -212,6 +219,7 @@
       "keywords"
     ],
     "include": [
+      "dist",
       "README.md",
       "LICENSE",
       "yarn.lock"

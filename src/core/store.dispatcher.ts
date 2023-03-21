@@ -1,4 +1,4 @@
-import { StoreMiddleware, StoreMiddlewareContext } from './store.middleware';
+import { StoreMiddleware, StoreMiddlewareContext } from './store.middleware.js';
 
 /** Represents a store middleware dispatcher */
 export interface StoreDispatcher {

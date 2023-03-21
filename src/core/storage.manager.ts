@@ -8,14 +8,14 @@ import {
   Subscription,
   SubscriptionCallback,
 } from '@flexbase/observable-subject';
-import { PersistanceProvider } from '../persistance/persistance.provider';
-import { PersistanceEvent, PersistanceContext } from '../persistance/persistance.context';
-import { Store } from './store.interface';
-import { StoreComparer } from './store.comparer';
-import { StoreDispatcher, defaultStoreDispatcher } from './store.dispatcher';
-import { StoreMiddleware } from './store.middleware';
-import { Setter, SetterCallback } from './store.setter';
-import { StoreWrapper } from './store.wrapper';
+import { PersistanceProvider } from '../persistance/persistance.provider.js';
+import { PersistanceEvent, PersistanceContext } from '../persistance/persistance.context.js';
+import { Store } from './store.interface.js';
+import { StoreComparer } from './store.comparer.js';
+import { StoreDispatcher, defaultStoreDispatcher } from './store.dispatcher.js';
+import { StoreMiddleware } from './store.middleware.js';
+import { Setter, SetterCallback } from './store.setter.js';
+import { StoreWrapper } from './store.wrapper.js';
 
 const _storageReverseLookup = new Map<symbol, StorageManager>();
 

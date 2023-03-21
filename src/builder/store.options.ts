@@ -1,7 +1,7 @@
-import { StoreComparer } from '../core/store.comparer';
-import { StoreMiddleware } from '../core/store.middleware';
-import { PersistanceProvider } from '../persistance/persistance.provider';
-import { StorageManager } from '../core/storage.manager';
+import { StoreComparer } from '../core/store.comparer.js';
+import { StoreMiddleware } from '../core/store.middleware.js';
+import { PersistanceProvider } from '../persistance/persistance.provider.js';
+import { StorageManager } from '../core/storage.manager.js';
 
 export type StoreOptions<T> = {
   storageManager?: StorageManager;

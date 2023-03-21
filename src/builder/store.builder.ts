@@ -1,8 +1,8 @@
-import { StoreComparer } from '../core/store.comparer';
-import { StoreMiddleware } from '../core/store.middleware';
-import { PersistanceProvider } from '../persistance/persistance.provider';
-import { StoreOptions, StoreOptionsFluent } from './store.options';
-import { StorageManager } from '../core/storage.manager';
+import { StoreComparer } from '../core/store.comparer.js';
+import { StoreMiddleware } from '../core/store.middleware.js';
+import { PersistanceProvider } from '../persistance/persistance.provider.js';
+import { StoreOptions, StoreOptionsFluent } from './store.options.js';
+import { StorageManager } from '../core/storage.manager.js';
 
 /** @internal */
 export class StoreBuilder<T> implements StoreOptionsFluent<T> {

@@ -1,7 +1,7 @@
 import { Logger } from '@flexbase/logger';
-import { PersistanceContext } from './persistance.context';
-import { PersistanceProvider } from './persistance.provider';
-import { PersistanceStorage } from './persistance.storage';
+import { PersistanceContext } from './persistance.context.js';
+import { PersistanceProvider } from './persistance.provider.js';
+import { PersistanceStorage } from './persistance.storage.js';
 
 export class PersistanceStorageProvider<T> implements PersistanceProvider<T> {
   constructor(private readonly _key: string, private readonly _storage: PersistanceStorage, private readonly _logger?: Logger) {}

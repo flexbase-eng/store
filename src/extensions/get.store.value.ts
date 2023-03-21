@@ -1,5 +1,5 @@
-import { Store } from '../core/store.interface';
-import { StorageManager } from '../core/storage.manager';
+import { Store } from '../core/store.interface.js';
+import { StorageManager } from '../core/storage.manager.js';
 
 export const getStoreValue = <T>(store: Store<T>): Readonly<T> | undefined => {
   const mgr = StorageManager.lookupManager(store);

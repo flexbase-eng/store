@@ -3,14 +3,14 @@ import { StoreMiddleware } from '../core/store.middleware.js';
 import { PersistanceProvider } from '../persistance/persistance.provider.js';
 import { StorageManager } from '../core/storage.manager.js';
 
-export type StoreOptions<T> = {
+export interface StoreOptions<T> {
   storageManager?: StorageManager;
   key?: symbol;
   defaultValue?: T;
   comparer?: StoreComparer<T>;
   middleware?: StoreMiddleware<T>[];
   persistanceProvider?: PersistanceProvider<T>;
-};
+}
 
 export interface StoreOptionsFluent<T> {
   storageManager(storageManager: StorageManager): Omit<StoreOptionsFluent<T>, 'storageManager'>;

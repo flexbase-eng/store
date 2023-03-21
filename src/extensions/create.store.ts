@@ -4,6 +4,9 @@ import { Store } from '../core/store.interface.js';
 import { StoreBuilder } from '../builder/store.builder.js';
 import { StoreOptions, StoreOptionsFluent } from '../builder/store.options.js';
 
+/**
+ * Creates a store
+ */
 export const createStore = <T>(options?: ((builder: StoreOptionsFluent<T>) => void) | StoreOptions<T>): Store<T> => {
   const builder = new StoreBuilder<T>(options);
 

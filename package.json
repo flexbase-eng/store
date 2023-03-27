@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@flexbase/logger": "^1.4.3",
-    "@flexbase/observable-subject": "^2.0.0"
+    "@flexbase/observable-subject": "^2.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.5.0",

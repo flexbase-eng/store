@@ -55,10 +55,6 @@ export class StorageManager {
 
     subjectManager.register(subject, multicastDispatcher);
 
-    // TODO instead of async, add new registrations to a initial execution list
-    // that gets run by the manager
-    // how can we hook into the render/update loop to auto run it?
-
     this.executeAfterRegister(wrapper)
       .then(() => {
         this._logger?.debug('executeAfterRegister finished');

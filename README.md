@@ -105,3 +105,30 @@ await resetStoreValue(numberStore);
 
 value = storageManager.getValue(numberStore); // value is 42
 ```
+
+### Get store setter
+
+```ts
+const setter = getStoreSetter(someDataStore);
+
+await setter({ name: 'Test', id: 1 });
+
+await setter(_ => {name: 'Test', id: 1});
+
+```
+
+### Subscribe
+
+```ts
+const subscription = subscribeToStore(someDataStore, context => {...});
+
+subscription.unsubscribe();
+```
+
+## Persistance
+
+TODO
+
+## Middleware
+
+TODO

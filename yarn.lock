@@ -516,7 +516,7 @@
   resolved "https://registry.yarnpkg.com/@flexbase/logger/-/logger-1.4.3.tgz#b4fdfca3e6c37b595bfcdf7aa7a8fd125262007e"
   integrity sha512-HkLSX4oW/buB+bFFnYoNaP4I0wEYCay0v27zFqRffXe5Ihoa4MgvM84NFZFgud2b2Vr6q2ysN4fD2lIh1JwwhA==
 
-"@flexbase/observable-subject@^2.0.0":
+"@flexbase/observable-subject@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@flexbase/observable-subject/-/observable-subject-2.1.0.tgz#5d8bd8ada7ab0ba3bd3727d11f70f5fa59b95818"
   integrity sha512-irRoNQq7au7xLF9GGe8q4v/fPtbT4U6+jfoy/kNeO2bJVDVWeslBORq/xDweJ+f5aYmF0T8WWhWTYBOaWYKPrg==

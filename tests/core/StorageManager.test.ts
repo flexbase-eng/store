@@ -75,7 +75,7 @@ describe('storageManager duplicate registration', () => {
 
     const sm = new StorageManager(undefined, noopLogger);
 
-    const value2 = sm.register<number>(key, undefined, (_, $) => true, []);
+    const value2 = sm.register<number>(key, 1, (_, $) => true, []);
 
     expect(value1).not.toBeNull();
     expect(value2).not.toBeNull();
@@ -138,12 +138,12 @@ describe('storageManager middleware', () => {
     const fn = { m: (id: number) => id + 1 };
     const fnMock = vi.spyOn(fn, 'm');
 
-    const middleware: StoreMiddleware<TestValue> = (context, next) => {
+    const middleware: StoreMiddleware<TestValue | undefined> = (context, next) => {
       fn.m(context.newValue!.id);
       return next();
     };
 
-    const test = storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, [middleware]);
+    const test = storageManager.register<TestValue | undefined>(Symbol(), undefined, defaultStoreComparer, [middleware]);
 
     await storageManager.setValue(test, { id: 1, name: 'test' });
 
@@ -171,7 +171,7 @@ describe('storageManager middleware', () => {
       return next();
     };
 
-    const test = storageManager.register(Symbol(), undefined, defaultStoreComparer, [middleware2, middleware1, middleware2]);
+    const test = storageManager.register<number>(Symbol(), 1, defaultStoreComparer, [middleware2, middleware1, middleware2]);
 
     const setTest = storageManager.getSetter(test);
 
@@ -197,7 +197,7 @@ describe('storageManager comparer', () => {
       return next();
     };
 
-    const test = storageManager.register(Symbol(), undefined, defaultStoreComparer, [middleware]);
+    const test = storageManager.register<string>(Symbol(), '', defaultStoreComparer, [middleware]);
 
     const setTest = storageManager.getSetter(test);
 
@@ -227,7 +227,7 @@ describe('storageManager comparer', () => {
       return next();
     };
 
-    const test = storageManager.register<typeof testValue>(Symbol(), undefined, defaultStoreComparer, [middleware]);
+    const test = storageManager.register<typeof testValue>(Symbol(), { name: '' }, defaultStoreComparer, [middleware]);
 
     const setTest = storageManager.getSetter(test);
 
@@ -256,9 +256,8 @@ test('storageManager getValue not registered', () => {
 
   const sm = new StorageManager(defaultStoreDispatcher, noopLogger);
 
-  const value = sm.getValue(testState);
+  expect(() => sm.getValue(testState)).toThrow();
 
-  expect(value).toBeUndefined();
   expect(loggerMethod).toBeCalledTimes(1);
 });
 
@@ -309,11 +308,11 @@ describe('storageManager subscribe', () => {
 });
 
 test('storageManager persistance write', async () => {
-  const mockPersistanceProvider = new Mock<PersistanceProvider<TestValue>>();
+  const mockPersistanceProvider = new Mock<PersistanceProvider<TestValue | undefined>>();
 
   mockPersistanceProvider.setup(m => m.handle(It.IsAny())).returnsAsync();
 
-  const test = storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, [], mockPersistanceProvider.object());
+  const test = storageManager.register<TestValue | undefined>(Symbol(), undefined, defaultStoreComparer, [], mockPersistanceProvider.object());
 
   await storageManager.setValue(test, { id: 1, name: 'test' });
 
@@ -335,9 +334,9 @@ describe('storageManager executeAfterRegister', async () => {
     const persistanceStorage = new TestPersistanceStorage();
     persistanceStorage.setItem(key.toString(), JSON.stringify(<TestValue>{ id: 1, name: 'test' }));
 
-    const persistanceProvider = new PersistanceStorageProvider<TestValue>(key.toString(), persistanceStorage, noopLogger);
+    const persistanceProvider = new PersistanceStorageProvider<TestValue | undefined>(key.toString(), persistanceStorage, noopLogger);
 
-    const test = storageManager.register<TestValue>(key, undefined, defaultStoreComparer, [], persistanceProvider);
+    const test = storageManager.register<TestValue | undefined>(key, undefined, defaultStoreComparer, [], persistanceProvider);
 
     await flushPromises();
 
@@ -352,9 +351,9 @@ describe('storageManager executeAfterRegister', async () => {
     const key = Symbol();
     const loggerMethod = vi.spyOn(noopLogger, 'error');
 
-    const persistanceProvider = new ThrowPersistanceStorageProvider<TestValue>();
+    const persistanceProvider = new ThrowPersistanceStorageProvider<TestValue | undefined>();
 
-    const test = storageManager.register<TestValue>(key, undefined, defaultStoreComparer, [], persistanceProvider);
+    const test = storageManager.register<TestValue | undefined>(key, undefined, defaultStoreComparer, [], persistanceProvider);
 
     await flushPromises();
 
@@ -366,7 +365,7 @@ describe('storageManager executeAfterRegister', async () => {
 
 describe('storageManager reset', () => {
   test('reset undefined', async () => {
-    const test = storageManager.register<TestValue>(Symbol(), undefined, defaultStoreComparer, []);
+    const test = storageManager.register<TestValue | undefined>(Symbol(), undefined, defaultStoreComparer, []);
 
     await storageManager.setValue(test, { id: 1, name: 'test' });
     let value = storageManager.getValue(test);

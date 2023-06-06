@@ -4,13 +4,13 @@ import { It, Mock, Times } from 'moq.ts';
 import { createStore, defaultStoreDispatcher, StoreMiddleware, StorageManager, PersistanceProvider } from '../../src/index';
 
 test('createStore', () => {
-  const value = createStore();
+  const value = createStore('');
 
   expect(value).not.toBeNull();
 });
 
 test('createStore generic', () => {
-  const value = createStore<number>();
+  const value = createStore<number>(1);
 
   expect(value).not.toBeNull();
 });
@@ -20,8 +20,8 @@ test('createStore duplicate key warning', () => {
 
   const key = Symbol('DupTest');
 
-  const value1 = createStore<number>(options => options.key(key));
-  const value2 = createStore<number>(options => options.key(key));
+  const value1 = createStore<number>(1, options => options.key(key));
+  const value2 = createStore<number>(2, options => options.key(key));
 
   expect(value1).not.toBeNull();
   expect(value2).not.toBeNull();
@@ -48,10 +48,10 @@ test('createStore builder', async () => {
     fn.m(context.newValue!.v1);
   };
 
-  const testState = createStore<Test>(options => {
+  const testState = createStore<Test>({ v1: 'test', v2: false }, options => {
     options
       .key('Test')
-      .defaultValue({ v1: 'test', v2: false })
+      // .defaultValue({ v1: 'test', v2: false })
       .storageManager(sm)
       .comparer((a, b) => a === b)
       .middleware(middleware)

@@ -28,10 +28,10 @@ export class StoreBuilder<T> implements StoreOptionsFluent<T> {
     return this;
   }
 
-  defaultValue(value: T): Omit<StoreOptionsFluent<T>, 'default'> {
-    this._options.defaultValue = value;
-    return this;
-  }
+  // defaultValue(value: T): Omit<StoreOptionsFluent<T>, 'default'> {
+  //   this._options.defaultValue = value;
+  //   return this;
+  // }
 
   comparer(comparer: StoreComparer<T>): Omit<StoreOptionsFluent<T>, 'comparer'> {
     this._options.comparer = comparer;

@@ -7,14 +7,14 @@ import { StoreOptions, StoreOptionsFluent } from '../builder/store.options.js';
 /**
  * Creates a store
  */
-export const createStore = <T>(options?: ((builder: StoreOptionsFluent<T>) => void) | StoreOptions<T>): Store<T> => {
+export const createStore = <T>(defaultValue: T, options?: ((builder: StoreOptionsFluent<T>) => void) | StoreOptions<T>): Store<T> => {
   const builder = new StoreBuilder<T>(options);
 
   const builtOptions = builder.build();
 
   const useStorageManager = builtOptions?.storageManager ?? storageManager;
   const key = builtOptions?.key ?? Symbol();
-  const defaultValue = builtOptions?.defaultValue ?? undefined;
+  // const defaultValue = builtOptions?.defaultValue ?? undefined;
   const comparer = builtOptions?.comparer ?? defaultStoreComparer;
   const middleware = builtOptions?.middleware ?? [];
   const persistanceProvider = builtOptions?.persistanceProvider;

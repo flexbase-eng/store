@@ -31,7 +31,7 @@ export class StorageManager {
 
   register<T>(
     key: symbol,
-    default$: T | undefined,
+    default$: T,
     comparer: StoreComparer<T>,
     middleware: StoreMiddleware<T>[],
     persistanceProvider?: PersistanceProvider<T>
@@ -77,21 +77,21 @@ export class StorageManager {
     }
   }
 
-  getValue<T>(store: Store<T>): Readonly<T> | undefined {
+  getValue<T>(store: Store<T>): Readonly<T> {
     const storeWrapper = this._stores.get(store.key);
 
     if (!storeWrapper) {
       const msg = `Value with key '${store.key.toString()}' has not been registered with this storage manager`;
       this._logger?.warn(msg);
-      return undefined;
+      throw new Error(msg);
     }
 
     return storeWrapper.value;
   }
 
-  private executeSetterCallback<T>(currentValue: T | undefined, setter: SetterCallback<T>): T | undefined {
+  private executeSetterCallback<T>(currentValue: T, setter: SetterCallback<T>): T {
     if (typeof setter === 'function') {
-      const fn = setter as (currentValue: Readonly<T> | undefined) => T;
+      const fn = setter as (currentValue: Readonly<T>) => T;
       return fn(currentValue);
     } else {
       return setter;

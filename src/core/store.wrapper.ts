@@ -14,7 +14,7 @@ export class StoreWrapper<T> implements Store<T> {
 
   constructor(
     private readonly _key: symbol,
-    private readonly _default: T | undefined,
+    private readonly _default: T,
     private readonly _comparer: StoreComparer<T>,
     private readonly _middleware: StoreMiddleware<T>[],
     private readonly _subject: Subject,
@@ -29,11 +29,11 @@ export class StoreWrapper<T> implements Store<T> {
     return this._valueWrapper !== null;
   }
 
-  get value(): T | undefined {
+  get value(): T {
     return this._valueWrapper ? this._valueWrapper.value : this._default;
   }
 
-  get default(): T | undefined {
+  get default(): T {
     return this._default;
   }
 

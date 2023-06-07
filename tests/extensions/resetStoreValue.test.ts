@@ -3,7 +3,7 @@ import { storageManager, defaultStoreComparer, resetStoreValue } from '../../src
 
 describe('resetStoreValue', () => {
   test('default is undefined', async () => {
-    const test = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+    const test = storageManager.register<number | undefined>(Symbol(), undefined, defaultStoreComparer, []);
 
     await storageManager.setValue(test, 1);
     let value = storageManager.getValue(test);
@@ -19,7 +19,7 @@ describe('resetStoreValue', () => {
   });
 
   test('to default', async () => {
-    const test = storageManager.register<number>(Symbol(), 42, defaultStoreComparer, []);
+    const test = storageManager.register<number | undefined>(Symbol(), 42, defaultStoreComparer, []);
 
     await storageManager.setValue(test, 1);
     let value = storageManager.getValue(test);

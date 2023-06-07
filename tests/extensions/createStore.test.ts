@@ -51,7 +51,6 @@ test('createStore builder', async () => {
   const testState = createStore<Test>({ v1: 'test', v2: false }, options => {
     options
       .key('Test')
-      // .defaultValue({ v1: 'test', v2: false })
       .storageManager(sm)
       .comparer((a, b) => a === b)
       .middleware(middleware)

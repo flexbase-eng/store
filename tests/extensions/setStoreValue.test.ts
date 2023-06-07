@@ -3,7 +3,7 @@ import { storageManager, defaultStoreComparer, setStoreValue, Store } from '../.
 
 describe('setStoreValue', () => {
   test('success', async () => {
-    const test: Store<number> = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+    const test = storageManager.register<number | undefined>(Symbol(), undefined, defaultStoreComparer, []);
 
     await setStoreValue(test, 1);
     const value = storageManager.getValue(test);
@@ -13,7 +13,7 @@ describe('setStoreValue', () => {
   });
 
   test('set undefined', async () => {
-    const test: Store<number> = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+    const test = storageManager.register<number | undefined>(Symbol(), undefined, defaultStoreComparer, []);
 
     await setStoreValue(test, undefined);
     const value = storageManager.getValue(test);
@@ -22,7 +22,7 @@ describe('setStoreValue', () => {
   });
 
   test('set with callback', async () => {
-    const test: Store<number> = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+    const test = storageManager.register<number | undefined>(Symbol(), undefined, defaultStoreComparer, []);
 
     await setStoreValue(test, _ => 100);
     const value = storageManager.getValue(test);
@@ -32,7 +32,7 @@ describe('setStoreValue', () => {
   });
 
   test('set with callback advanced', async () => {
-    const test: Store<number> = storageManager.register<number>(Symbol(), 100, defaultStoreComparer, []);
+    const test = storageManager.register<number>(Symbol(), 100, defaultStoreComparer, []);
 
     await setStoreValue(test, currentValue => (currentValue ? Math.min(42, currentValue) : 0));
     const value = storageManager.getValue(test);
@@ -42,7 +42,7 @@ describe('setStoreValue', () => {
   });
 
   test('set undefined with callback', async () => {
-    const test: Store<number> = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+    const test = storageManager.register<number | undefined>(Symbol(), undefined, defaultStoreComparer, []);
 
     await setStoreValue(test, _ => undefined);
     const value = storageManager.getValue(test);

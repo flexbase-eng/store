@@ -18,7 +18,6 @@ describe('StoreBuilder', () => {
       storageManager,
       key: Symbol('test'),
       comparer: defaultStoreComparer,
-      // defaultValue: 1,
       middleware,
       persistanceProvider: mockPersistanceProvider,
     });
@@ -27,7 +26,6 @@ describe('StoreBuilder', () => {
 
     expect(options.key!.toString()).toBe(Symbol('test').toString());
     expect(options.storageManager).toBe(storageManager);
-    // expect(options.defaultValue).toBe(1);
     expect(options.middleware).toContain(testMiddleware);
     expect(options.persistanceProvider).toBe(mockPersistanceProvider);
   });
@@ -45,7 +43,6 @@ describe('StoreBuilder', () => {
       .storageManager(storageManager)
       .key('test')
       .comparer(defaultStoreComparer)
-      // .defaultValue(1)
       .middleware(middleware)
       .persistanceProvider(mockPersistanceProvider);
 
@@ -53,7 +50,6 @@ describe('StoreBuilder', () => {
 
     expect(options.key!.toString()).toBe(Symbol('test').toString());
     expect(options.storageManager).toBe(storageManager);
-    // expect(options.defaultValue).toBe(1);
     expect(options.middleware).toContain(middleware);
     expect(options.persistanceProvider).toBe(mockPersistanceProvider);
   });

@@ -14,7 +14,6 @@ export const createStore = <T>(defaultValue: T, options?: ((builder: StoreOption
 
   const useStorageManager = builtOptions?.storageManager ?? storageManager;
   const key = builtOptions?.key ?? Symbol();
-  // const defaultValue = builtOptions?.defaultValue ?? undefined;
   const comparer = builtOptions?.comparer ?? defaultStoreComparer;
   const middleware = builtOptions?.middleware ?? [];
   const persistanceProvider = builtOptions?.persistanceProvider;

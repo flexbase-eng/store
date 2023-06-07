@@ -2,7 +2,7 @@ import { test, expect } from 'vitest';
 import { storageManager, defaultStoreComparer, subscribeToStore } from '../../src/index';
 
 test('subscribeToStore', () => {
-  const test = storageManager.register<number>(Symbol(), undefined, defaultStoreComparer, []);
+  const test = storageManager.register<number>(Symbol(), 0, defaultStoreComparer, []);
 
   const subscription = subscribeToStore(test, _ => Promise.resolve());
 

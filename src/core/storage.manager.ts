@@ -16,6 +16,7 @@ import { StoreDispatcher, defaultStoreDispatcher } from './store.dispatcher.js';
 import { StoreMiddleware } from './store.middleware.js';
 import { Setter, SetterCallback } from './store.setter.js';
 import { StoreWrapper } from './store.wrapper.js';
+import { StoreDebounceOptions } from './store.debounce.js';
 
 const _storageReverseLookup = new Map<symbol, StorageManager>();
 
@@ -38,6 +39,7 @@ export class StorageManager {
     comparer: StoreComparer<T>,
     middleware: StoreMiddleware<T>[],
     persistanceProvider?: PersistanceProvider<T>,
+    debounceOptions?: StoreDebounceOptions,
   ): Store<T> {
     const existing = this._stores.get(key);
     if (existing) {
@@ -51,7 +53,7 @@ export class StorageManager {
 
     const subject: Subject = { key };
 
-    const wrapper = new StoreWrapper(key, default$, comparer, middleware, subject, persistanceProvider);
+    const wrapper = new StoreWrapper(key, default$, comparer, middleware, subject, persistanceProvider, debounceOptions);
 
     this._stores.set(key, wrapper);
     _storageReverseLookup.set(key, this);
@@ -126,15 +128,27 @@ export class StorageManager {
     const newValue = this.executeSetterCallback(currentValue, setter);
 
     if (!store.comparer(newValue, currentValue)) {
-      await this._dispatcher.dispatch({ newValue, currentValue }, store.middleware);
+      const doWork = async () => {
+        await this._dispatcher.dispatch({ newValue, currentValue }, store.middleware);
 
-      store.setValue(newValue);
+        store.setValue(newValue);
 
-      await this.handlePersistance(store.persistanceProvider, 'write', newValue, store);
+        await this.handlePersistance(store.persistanceProvider, 'write', newValue, store);
 
-      const subContext: SubscriptionContext<T | undefined> = { value: newValue };
+        const subContext: SubscriptionContext<T | undefined> = { value: newValue };
 
-      await subjectManager.notify(store.subject, subContext);
+        await subjectManager.notify(store.subject, subContext);
+      };
+
+      const debouceState = store.debouceState;
+      if (debouceState) {
+        clearTimeout(debouceState.timeout);
+        debouceState.timeout = setTimeout(async () => {
+          await doWork();
+        }, debouceState.delayInMilliseconds);
+      } else {
+        await doWork();
+      }
     }
   }
 

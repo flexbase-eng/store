@@ -114,6 +114,31 @@ describe('storageManager set', () => {
     expect(value!.name).toBe('test');
   });
 
+  test('debounce', async () => {
+    vi.useFakeTimers();
+
+    const middleware: StoreMiddleware<number> = (context, next) => {
+      expect(context.newValue).toBe(3);
+      return next();
+    };
+
+    const test = storageManager.register(Symbol(), 0, defaultStoreComparer, [middleware], undefined, { delayInMilliseconds: 1000 });
+
+    await storageManager.setValue(test, 1);
+    await storageManager.setValue(test, 2);
+    await storageManager.setValue(test, 3);
+
+    let value = storageManager.getValue(test);
+    expect(value).toBe(0);
+
+    await vi.advanceTimersByTimeAsync(1500);
+
+    value = storageManager.getValue(test);
+    expect(value).toBe(3);
+
+    vi.useRealTimers();
+  });
+
   test('value not registered', async () => {
     const loggerMethod = vi.spyOn(noopLogger, 'warn');
 

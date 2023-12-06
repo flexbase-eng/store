@@ -9,6 +9,7 @@ export { PersistanceStorage } from './persistance/persistance.storage.js';
 export { PersistanceProvider } from './persistance/persistance.provider.js';
 export { PersistanceStorageProvider } from './persistance/persistance.storage.provider.js';
 export { StoreOptions } from './builder/store.options.js';
+export { StoreDebounceOptions } from './core/store.debounce.js';
 export { createStore } from './extensions/create.store.js';
 export { getStoreValue } from './extensions/get.store.value.js';
 export { subscribeToStore } from './extensions/subscribe.to.store.js';

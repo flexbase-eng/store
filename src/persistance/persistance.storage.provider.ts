@@ -4,7 +4,11 @@ import { PersistanceProvider } from './persistance.provider.js';
 import { PersistanceStorage } from './persistance.storage.js';
 
 export class PersistanceStorageProvider<T> implements PersistanceProvider<T> {
-  constructor(private readonly _key: string, private readonly _storage: PersistanceStorage, private readonly _logger?: Logger) {}
+  constructor(
+    private readonly _key: string,
+    private readonly _storage: PersistanceStorage,
+    private readonly _logger?: Logger,
+  ) {}
 
   async handle(context: PersistanceContext<T>): Promise<void> {
     switch (context.event) {

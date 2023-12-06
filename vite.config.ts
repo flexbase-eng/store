@@ -28,7 +28,8 @@ export default defineConfig({
     environment: 'node',
     setupFiles: './tests/setup.ts',
     coverage: {
-      provider: 'istanbul',
+      provider: 'v8',
+      include: ['src/'],
     },
   },
   plugins: [dts({ insertTypesEntry: true })],

@@ -23,7 +23,10 @@ export class StorageManager {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private readonly _stores = new Map<symbol, StoreWrapper<any>>();
 
-  constructor(private readonly _dispatcher: StoreDispatcher = defaultStoreDispatcher, private _logger?: Logger) {}
+  constructor(
+    private readonly _dispatcher: StoreDispatcher = defaultStoreDispatcher,
+    private _logger?: Logger,
+  ) {}
 
   set logger(logger: Logger) {
     this._logger = logger;
@@ -34,7 +37,7 @@ export class StorageManager {
     default$: T,
     comparer: StoreComparer<T>,
     middleware: StoreMiddleware<T>[],
-    persistanceProvider?: PersistanceProvider<T>
+    persistanceProvider?: PersistanceProvider<T>,
   ): Store<T> {
     const existing = this._stores.get(key);
     if (existing) {
@@ -102,7 +105,7 @@ export class StorageManager {
     provider: PersistanceProvider<T> | undefined,
     event: PersistanceEvent,
     value: T | undefined,
-    store: StoreWrapper<T>
+    store: StoreWrapper<T>,
   ): Promise<void> {
     if (provider === undefined) {
       return;

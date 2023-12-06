@@ -18,7 +18,7 @@ export class StoreWrapper<T> implements Store<T> {
     private readonly _comparer: StoreComparer<T>,
     private readonly _middleware: StoreMiddleware<T>[],
     private readonly _subject: Subject,
-    private readonly _persistanceProvider?: PersistanceProvider<T>
+    private readonly _persistanceProvider?: PersistanceProvider<T>,
   ) {}
 
   get key(): symbol {

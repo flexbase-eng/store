@@ -3,6 +3,7 @@ import { StoreMiddleware } from '../core/store.middleware.js';
 import { PersistanceProvider } from '../persistance/persistance.provider.js';
 import { StoreOptions, StoreOptionsFluent } from './store.options.js';
 import { StorageManager } from '../core/storage.manager.js';
+import { StoreDebounceOptions } from '../core/store.debounce.js';
 
 /** @internal */
 export class StoreBuilder<T> implements StoreOptionsFluent<T> {
@@ -40,6 +41,11 @@ export class StoreBuilder<T> implements StoreOptionsFluent<T> {
 
   persistanceProvider(persistanceProvider: PersistanceProvider<T>): Omit<StoreOptionsFluent<T>, 'persistance'> {
     this._options.persistanceProvider = persistanceProvider;
+    return this;
+  }
+
+  debounce(options: StoreDebounceOptions): Omit<StoreOptionsFluent<T>, 'debounce'> {
+    this._options.debounceOptions = options;
     return this;
   }
 

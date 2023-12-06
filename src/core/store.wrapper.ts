@@ -76,7 +76,7 @@ export class StoreWrapper<T> implements Store<T> {
     return this._persistanceProvider;
   }
 
-  get debouceState(): DebounceState<T> | undefined {
+  get debouceState(): DebounceState | undefined {
     return this._debounceState;
   }
 }

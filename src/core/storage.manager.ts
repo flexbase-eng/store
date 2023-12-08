@@ -70,13 +70,15 @@ export class StorageManager {
   }
 
   private async executeAfterRegister<T>(store: StoreWrapper<T>): Promise<void> {
+    const currentValue = store.value;
+
     if (store.persistanceProvider) {
       await this.handlePersistance(store.persistanceProvider, 'read', store.value, store);
     }
 
     if (store.value) {
-      const subContext = { value: store.value };
-      await subjectManager.notify(store.subject, subContext);
+      await this._dispatcher.dispatch({ newValue: store.value, currentValue }, store.middleware);
+      await subjectManager.notify(store.subject, { value: store.value });
     }
   }
 

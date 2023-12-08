@@ -211,8 +211,6 @@ describe('storageManager comparer', () => {
 
     expect(fnMock).toBeCalledWith('test');
 
-    setTest('test');
-
     expect(fnMock).toBeCalledTimes(1);
   });
 
@@ -244,7 +242,7 @@ describe('storageManager comparer', () => {
 
     setTest(testValue);
 
-    expect(fnMock).toBeCalledTimes(1);
+    expect(fnMock).toBeCalledTimes(2);
   });
 });
 

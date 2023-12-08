@@ -73,6 +73,6 @@ test('createStore builder', async () => {
   expect(value!.v1).toBe('1');
   expect(value!.v2).toBe(true);
 
-  expect(fnMock).toBeCalledTimes(1);
+  expect(fnMock).toBeCalledTimes(2);
   mockPersistanceProvider.verify(m => m.handle(It.IsAny()), Times.Exactly(2));
 });

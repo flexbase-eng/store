@@ -17,7 +17,6 @@ export const createStore = <T>(defaultValue: T, options?: ((builder: StoreOption
   const comparer = builtOptions?.comparer ?? defaultStoreComparer;
   const middleware = builtOptions?.middleware ?? [];
   const persistanceProvider = builtOptions?.persistanceProvider;
-  const debounceOptions = builtOptions?.debounceOptions;
 
-  return useStorageManager.register(key, defaultValue, comparer, middleware, persistanceProvider, debounceOptions);
+  return useStorageManager.register(key, defaultValue, comparer, middleware, persistanceProvider);
 };

@@ -2,7 +2,6 @@ import { StoreComparer } from '../core/store.comparer.js';
 import { StoreMiddleware } from '../core/store.middleware.js';
 import { PersistanceProvider } from '../persistance/persistance.provider.js';
 import { StorageManager } from '../core/storage.manager.js';
-import { StoreDebounceOptions } from '../core/store.debounce.js';
 
 export interface StoreOptions<T> {
   storageManager?: StorageManager;
@@ -10,7 +9,6 @@ export interface StoreOptions<T> {
   comparer?: StoreComparer<T>;
   middleware?: StoreMiddleware<T>[];
   persistanceProvider?: PersistanceProvider<T>;
-  debounceOptions?: StoreDebounceOptions;
 }
 
 export interface StoreOptionsFluent<T> {
@@ -19,5 +17,4 @@ export interface StoreOptionsFluent<T> {
   comparer(comparer: StoreComparer<T>): Omit<StoreOptionsFluent<T>, 'comparer'>;
   middleware(...middleware: StoreMiddleware<T>[]): Omit<StoreOptionsFluent<T>, 'middleware'>;
   persistanceProvider(persistanceProvider: PersistanceProvider<T>): Omit<StoreOptionsFluent<T>, 'persistanceProvider'>;
-  debounce(options: StoreDebounceOptions): Omit<StoreOptionsFluent<T>, 'debounce'>;
 }

@@ -1,5 +1,5 @@
 export { StorageManager, storageManager } from './core/storage.manager.js';
-export { Store } from './core/store.interface.js';
+export { Store, StoreType } from './core/store.interface.js';
 export { StoreComparer, defaultStoreComparer } from './core/store.comparer.js';
 export { StoreDispatcher, defaultStoreDispatcher } from './core/store.dispatcher.js';
 export { StoreMiddlewareContext, StoreMiddlewareNext, StoreMiddleware } from './core/store.middleware.js';
